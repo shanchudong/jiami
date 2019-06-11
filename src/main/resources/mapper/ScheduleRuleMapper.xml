@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.neusoft.ssm.dao.ScheduleRuleMapper">
+
+    <insert id="add" parameterType="ScheduleRule">
+        <selectKey resultType ="java.lang.Long" keyProperty= "id" order= "AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into schedule_rule (doctor_id, week_time, register_level, noon_level, limit_num, operate_date)
+        values (#{doctor_id}, #{week_time}, #{register_level}, #{noon_level}, #{limit_num}, #{operate_date});
+    </insert>
+
+    <select id="alterAUTO">
+        alter table schedule_rule  AUTO_INCREMENT = 1;
+    </select>
+
+    <update id="update" parameterType="ScheduleRule">
+        update schedule_rule
+        set week_time = #{week_time}, register_level = #{register_level}, noon_level = #{noon_level}, limit_num = #{limit_num}, operate_date = #{operate_date}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from schedule_rule
+        where id = #{id}
+    </delete>
+
+    <select id="findAll" resultType="ScheduleRule">
+        select * from schedule_rule
+    </select>
+
+    <select id="findByAll" resultType="schedule" parameterType="java.lang.String">
+        select * from schedule_rule
+        where doctor_id in (
+            select id from doctor
+            where doctor.name like #{keyword})
+
+    </select>
+
+
+</mapper>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.neusoft.ssm.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="User">
+<!--        <result column="id" jdbcType="VARCHAR" property="id"/>-->
+        <result column="login_name" jdbcType="VARCHAR" property="login_name"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+    </resultMap>
+
+    <!--显示数据-->
+    <select id="UserList" resultMap="BaseResultMap">
+		select password,id,login_name,category  from USER
+		limit #{start},#{count}
+	</select>
+
+    <select id="selectByList" resultMap="BaseResultMap">
+		select * from USER
+	</select>
+
+    <select id="selectCategory" parameterType="java.lang.String" resultType="java.lang.String">
+        select category from user
+        where login_name = #{login_name}
+    </select>
+
+    <!--总数-->
+    <select id="total" resultType="int">
+		select count(*) from user
+	</select>
+
+    <!--登录-->
+    <select id="login" resultMap="BaseResultMap" parameterType="java.lang.String">
+	  select login_name, password from User
+	  WHERE  login_name = #{login_name} AND password= #{password}
+	</select>
+
+    <!--注册-->
+    <insert id="register" parameterType="User">
+	  insert into User (login_name,password,category,question,answer)
+	  values (#{login_name}, #{password}, #{category}, #{question}, #{answer})
+	</insert>
+
+    <!--删除	-->
+    <delete id="deleteUserById" parameterType="int">
+	  delete from USER
+	  where id=#{id}
+	</delete>
+    <!-- 修改 -->
+    <update id="updateUser" parameterType="User">
+        update user set password=#{password}
+        where login_name=#{login_name}
+      </update>
+
+    <!--查询-->
+    <select id="findUserById" parameterType="java.lang.String" resultType="User">
+         select login_name,password,category,question,answer from user where login_name = #{login_name}
+      </select>
+
+    <!--验证用户是否存在-->
+    <select id="findUserByLgName" resultType="int">
+		select count(*) from user where login_name like #{login_name}
+	</select>
+
+    <select id="findByUserType" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from user where category=#{id}
+    </select>
+
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.neusoft.ssm.bean.User" useGeneratedKeys="true">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="login_name != null">
+                Login_name,
+            </if>
+            <if test="password != null">
+                Password,
+            </if>
+            <if test="category != null">
+                Category,
+            </if>
+            <if test="real_name != null">
+                Real_name,
+            </if>
+            <if test="deptid != null">
+                Deptid,
+            </if>
+            <if test="level != null">
+                Level,
+            </if>
+            <if test="ifwork != null">
+                Ifwork,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="login_name != null">
+                #{login_name,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="category != null">
+                #{category,jdbcType=CHAR},
+            </if>
+            <if test="real_name != null">
+                #{real_name,jdbcType=VARCHAR},
+            </if>
+            <if test="deptid != null">
+                #{deptid,jdbcType=INTEGER},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=CHAR},
+            </if>
+            <if test="ifwork != null">
+                #{ifwork,jdbcType=CHAR},
+            </if>
+
+
+        </trim>
+    </insert>
+
+    <delete id="deleteUserByName" parameterType="java.lang.String">
+        delete from user
+        where login_name = #{name,jdbcType=VARCHAR}
+    </delete>
+
+    <select id="getSearchUser" parameterType="java.lang.String" resultType="com.neusoft.ssm.bean.User">
+        select * from user
+        where (real_name like concat(concat('%',#{param2}   ) ,'%')
+          or login_name like concat(concat('%',#{param1}   ) ,'%'))
+        and category=#{param3}
+    </select>
+
+</mapper>
+

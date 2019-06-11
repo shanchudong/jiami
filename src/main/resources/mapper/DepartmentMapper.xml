@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.ssm.dao.DepartmentMapper">
+  <resultMap id="BaseResultMap" type="com.neusoft.ssm.bean.Department">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="DeptCode" jdbcType="VARCHAR" property="deptcode" />
+    <result column="DeptName" jdbcType="VARCHAR" property="deptname" />
+    <result column="DeptCategoryID" jdbcType="CHAR" property="deptcategoryid" />
+    <result column="DeptType" jdbcType="VARCHAR" property="depttype" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, DeptCode, DeptName, DeptCategoryID, DeptType
+  </sql>
+  <select id="selectByExample" parameterType="com.neusoft.ssm.bean.DepartmentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from department
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectDistinctID" resultType="java.util.HashMap">
+    select ConstantName,Id from constantitem where ConstantTypeID=1;
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from department
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from department
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.neusoft.ssm.bean.DepartmentExample">
+    delete from department
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.neusoft.ssm.bean.Department" useGeneratedKeys="true">
+    insert into department (DeptCode, DeptName, DeptCategoryID,
+                            DeptType)
+    values (#{deptcode,jdbcType=VARCHAR}, #{deptname,jdbcType=VARCHAR}, #{deptcategoryid,jdbcType=CHAR},
+            #{depttype,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.neusoft.ssm.bean.Department" useGeneratedKeys="true">
+    insert into department
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="deptcode != null">
+        DeptCode,
+      </if>
+      <if test="deptname != null">
+        DeptName,
+      </if>
+      <if test="deptcategoryid != null">
+        DeptCategoryID,
+      </if>
+      <if test="depttype != null">
+        DeptType,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="deptcode != null">
+        #{deptcode,jdbcType=VARCHAR},
+      </if>
+      <if test="deptname != null">
+        #{deptname,jdbcType=VARCHAR},
+      </if>
+      <if test="deptcategoryid != null">
+        #{deptcategoryid,jdbcType=CHAR},
+      </if>
+      <if test="depttype != null">
+        #{depttype,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.neusoft.ssm.bean.DepartmentExample" resultType="java.lang.Long">
+    select count(*) from department
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update department
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.deptcode != null">
+        DeptCode = #{record.deptcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deptname != null">
+        DeptName = #{record.deptname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deptcategoryid != null">
+        DeptCategoryID = #{record.deptcategoryid,jdbcType=CHAR},
+      </if>
+      <if test="record.depttype != null">
+        DeptType = #{record.depttype,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update department
+    set id = #{record.id,jdbcType=INTEGER},
+    DeptCode = #{record.deptcode,jdbcType=VARCHAR},
+    DeptName = #{record.deptname,jdbcType=VARCHAR},
+    DeptCategoryID = #{record.deptcategoryid,jdbcType=CHAR},
+    DeptType = #{record.depttype,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.neusoft.ssm.bean.Department">
+    update department
+    <set>
+      <if test="deptcode != null">
+        DeptCode = #{deptcode,jdbcType=VARCHAR},
+      </if>
+      <if test="deptname != null">
+        DeptName = #{deptname,jdbcType=VARCHAR},
+      </if>
+      <if test="deptcategoryid != null">
+        DeptCategoryID = #{deptcategoryid,jdbcType=CHAR},
+      </if>
+      <if test="depttype != null">
+        DeptType = #{depttype,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.neusoft.ssm.bean.Department">
+    update department
+    set DeptCode = #{deptcode,jdbcType=VARCHAR},
+        DeptName = #{deptname,jdbcType=VARCHAR},
+        DeptCategoryID = #{deptcategoryid,jdbcType=CHAR},
+        DeptType = #{depttype,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByDeptcgID" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from department where DeptCategoryID=#{id}
+  </select>
+
+  <insert id="uploadDepartmentInfo" parameterType="com.neusoft.ssm.bean.Department">
+    INSERT INTO department VALUES
+    <foreach collection="list" item="item" separator=",">
+      (#{item.id},#{item.deptcode},#{item.deptname},#{item.deptcategoryid},#{item.depttype})
+    </foreach>
+  </insert>
+
+  <select id="searchDept" parameterType="java.lang.String" resultType="com.neusoft.ssm.bean.Department">
+    select * from department
+    where (DeptName like concat(concat('%',#{param1}   ) ,'%')
+      or DeptCode like concat(concat('%',#{param1}   ) ,'%'))
+      and DeptCategoryID=#{param2}
+  </select>
+
+  <select id="getNameById" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select DeptName from department where id=#{id}
+  </select>
+
+  <select id="findAll" resultType="com.neusoft.ssm.bean.Department">
+    select * from department order by id
+  </select>
+
+  <select id="findNameById" parameterType="java.lang.Long" resultType="java.lang.String">
+    select DeptName from department
+    where id = #{id}
+  </select>
+
+</mapper>

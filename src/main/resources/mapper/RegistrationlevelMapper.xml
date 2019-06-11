@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.ssm.dao.RegistrationlevelDao">
+  <resultMap id="BaseResultMap" type="com.neusoft.ssm.bean.Registrationlevel">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="numberCode" jdbcType="VARCHAR" property="numbercode" />
+    <result column="numberName" jdbcType="VARCHAR" property="numbername" />
+    <result column="isDefult" jdbcType="INTEGER" property="isdefult" />
+    <result column="displayOrder" jdbcType="VARCHAR" property="displayorder" />
+    <result column="fee" jdbcType="DOUBLE" property="fee" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, numberCode, numberName, isDefult, displayOrder, fee
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from registrationlevel
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from registrationlevel
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.neusoft.ssm.bean.Registrationlevel" useGeneratedKeys="true">
+    insert into registrationlevel (numberCode, numberName, isDefult, 
+      displayOrder, fee)
+    values (#{numbercode,jdbcType=VARCHAR}, #{numbername,jdbcType=VARCHAR}, #{isdefult,jdbcType=INTEGER}, 
+      #{displayorder,jdbcType=VARCHAR}, #{fee,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.neusoft.ssm.bean.Registrationlevel" useGeneratedKeys="true">
+    insert into registrationlevel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="numbercode != null">
+        numberCode,
+      </if>
+      <if test="numbername != null">
+        numberName,
+      </if>
+      <if test="isdefult != null">
+        isDefult,
+      </if>
+      <if test="displayorder != null">
+        displayOrder,
+      </if>
+      <if test="fee != null">
+        fee,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="numbercode != null">
+        #{numbercode,jdbcType=VARCHAR},
+      </if>
+      <if test="numbername != null">
+        #{numbername,jdbcType=VARCHAR},
+      </if>
+      <if test="isdefult != null">
+        #{isdefult,jdbcType=INTEGER},
+      </if>
+      <if test="displayorder != null">
+        #{displayorder,jdbcType=VARCHAR},
+      </if>
+      <if test="fee != null">
+        #{fee,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.neusoft.ssm.bean.Registrationlevel">
+    update registrationlevel
+    <set>
+      <if test="numbercode != null">
+        numberCode = #{numbercode,jdbcType=VARCHAR},
+      </if>
+      <if test="numbername != null">
+        numberName = #{numbername,jdbcType=VARCHAR},
+      </if>
+      <if test="isdefult != null">
+        isDefult = #{isdefult,jdbcType=INTEGER},
+      </if>
+      <if test="displayorder != null">
+        displayOrder = #{displayorder,jdbcType=VARCHAR},
+      </if>
+      <if test="fee != null">
+        fee = #{fee,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.neusoft.ssm.bean.Registrationlevel">
+    update registrationlevel
+    set numberCode = #{numbercode,jdbcType=VARCHAR},
+      numberName = #{numbername,jdbcType=VARCHAR},
+      isDefult = #{isdefult,jdbcType=INTEGER},
+      displayOrder = #{displayorder,jdbcType=VARCHAR},
+      fee = #{fee,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="findAll" resultMap="BaseResultMap">
+    select * from registrationlevel
+  </select>
+</mapper>

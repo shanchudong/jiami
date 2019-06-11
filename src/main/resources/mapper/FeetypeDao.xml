@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.ssm.dao.FeetypeDao">
+  <resultMap id="BaseResultMap" type="com.neusoft.ssm.bean.Feetype">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="feetype_name" jdbcType="VARCHAR" property="feetypeName" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, feetypeName
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from feetype
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from feetype
+    where id = #{id}
+  </delete>
+
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.neusoft.ssm.bean.Feetype" useGeneratedKeys="true">
+    insert into feetype (feetypeName)
+    values (#{feetypeName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.neusoft.ssm.bean.Feetype" useGeneratedKeys="true">
+    insert into feetype
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="feetypeName != null">
+        feetypeName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="feetypeName != null">
+        #{feetypeName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.neusoft.ssm.bean.Feetype">
+    update feetype
+    <set>
+      <if test="feetypeName != null">
+        feetypeName = #{feetypeName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <update id="updateByPrimaryKey" parameterType="com.neusoft.ssm.bean.Feetype">
+    update feetype
+    set feetypeName = #{feetypeName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectAll" resultType="com.neusoft.ssm.bean.Feetype">
+    select
+    <include refid="Base_Column_List" />
+    from feetype
+  </select>
+</mapper>
